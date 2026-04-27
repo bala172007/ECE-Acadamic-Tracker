@@ -33,15 +33,28 @@
         
         select { padding: 4px; border-radius: 4px; border: 1px solid #ccc; width: 100%; }
         input[type="checkbox"] { transform: scale(1.3); cursor: pointer; }
+	@media print {
+    button, .dev-tag { display: none !important; } 
+    body { background: white; padding: 0; }
+    .container { box-shadow: none; border: none; width: 100%; max-width: 100%; margin: 0; padding: 0; }
+    
+    /* This ensures the header looks good in the PDF too */
+    div[style*="display: flex"] { display: block !important; text-align: center; }
+    h2 { margin-bottom: 20px !important; }
+}
     </style>
 </head>
 <body>
 
 <div class="container">
-    <h2>B.E. ECE - Academic Progress Report For ECE (R2024)| Developed By Bala Muralitharan</h2>
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+        <h2 style="margin: 0;">B.E. ECE - Academic Progress Report (R2024) | Developed By Bala Muralitharan</h2>
+        <button onclick="downloadPDF()" style="padding: 10px 20px; background: #28a745; color: white; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; display: flex; align-items: center; gap: 8px; shadow: 0 2px 5px rgba(0,0,0,0.1);">
+            📄 Download PDF Report
+        </button>
+    </div>
 
     <div class="cat-grid" id="catCards"></div>
-
     <div class="banner">
         <div class="stat-item">TOTAL CGPA<span id="cgpa">0.00</span></div>
         <div class="stat-item">Credits Completed<span id="totalCr">0 / 164</span></div>
@@ -240,7 +253,13 @@
         localStorage.setItem('ece_93_final_tracker', JSON.stringify(s));
         render();
     }
-
+	function downloadPDF() {
+        const originalTitle = document.title;
+        // PDF சேவ் ஆகும்போது இந்த பெயரில் சேவ் ஆகும்
+        document.title = "ECE_Academic_Report_Bala_M"; 
+        window.print();
+        document.title = originalTitle;
+    }
     render();
 </script>
 </body>
