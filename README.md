@@ -1,5 +1,4 @@
 
-```
 <!DOCTYPE html>
 <html lang="ta">
 <head>
@@ -10,37 +9,30 @@
         :root { --locked: #ffdada; --done: #d4edda; --primary: #1a73e8; --text: #333; }
         body { font-family: 'Segoe UI', sans-serif; background: #f4f7f6; color: var(--text); padding: 15px; }
         .container { max-width: 1450px; margin: auto; background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); }
-        
          /*Category Progress Cards*/
         .cat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px; margin-bottom: 25px; }
         .cat-box { background: #fff; border: 1px solid #ddd; padding: 12px; border-radius: 8px; text-align: center; border-top: 5px solid var(--primary); box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
         .cat-box h4 { margin: 0; font-size: 0.85em; color: #666; }
         .cat-box .cr { font-size: 1.2em; font-weight: bold; color: var(--primary); margin-top: 5px; }
-
         .banner { display: flex; justify-content: space-around; background: #2c3e50; color: white; padding: 20px; border-radius: 10px; margin-bottom: 20px; align-items: center; }
         .stat-item { text-align: center; }
         .stat-item span { display: block; font-size: 1.5em; font-weight: bold; }
-        
         table { width: 100%; border-collapse: collapse; font-size: 0.82em; }
         th { background: var(--primary); color: white; padding: 12px; position: sticky; top: 0; z-index: 10; text-align: center; }
         td { padding: 10px; border: 1px solid #eee; text-align: center; vertical-align: middle; }
-	td:nth-child(6) { text-align: left; }
-        
+	td:nth-child(6) { text-align: left; }     
         .row-locked { background-color: var(--locked) !important; color: #a00; }
         .row-locked input, .row-locked select { opacity: 0.3; pointer-events: none; }
         .row-done { background-color: var(--done) !important; }
-        
         .badge { padding: 4px 8px; border-radius: 4px; font-size: 0.75em; color: white; font-weight: bold; }
         .fc { background: #6c757d; } .sbc { background: #28a745; }
         .pre-warning { display: block; font-size: 0.8em; color: #d93025; margin-top: 4px; font-weight: bold; }
-        
         select { padding: 4px; border-radius: 4px; border: 1px solid #ccc; width: 100%; }
         input[type="checkbox"] { transform: scale(1.3); cursor: pointer; }
 	@media print {
     button, .dev-tag { display: none !important; } 
     body { background: white; padding: 0; }
-    .container { box-shadow: none; border: none; width: 100%; max-width: 100%; margin: 0; padding: 0; }
-    
+    .container { box-shadow: none; border: none; width: 100%; max-width: 100%; margin: 0; padding: 0; 
     /* This ensures the header looks good in the PDF too */
     div[style*="display: flex"] { display: block !important; text-align: center; }
     h2 { margin-bottom: 20px !important; }
@@ -56,14 +48,12 @@
             📄 Download PDF Report
         </button>
     </div>
-
     <div class="cat-grid" id="catCards"></div>
     <div class="banner">
         <div class="stat-item">TOTAL CGPA<span id="cgpa">0.00</span></div>
         <div class="stat-item">Credits Completed<span id="totalCr">0 / 164</span></div>
         <div class="stat-item">Courses Completed<span id="doneCount">0 / 93</span></div>
     </div>
-
     <table>
         <thead>
             <tr>
