@@ -1,3 +1,4 @@
+
 ```
 <!DOCTYPE html>
 <html lang="ta">
@@ -10,7 +11,7 @@
         body { font-family: 'Segoe UI', sans-serif; background: #f4f7f6; color: var(--text); padding: 15px; }
         .container { max-width: 1450px; margin: auto; background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); }
         
-        /* Category Progress Cards */
+         /*Category Progress Cards*/
         .cat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px; margin-bottom: 25px; }
         .cat-box { background: #fff; border: 1px solid #ddd; padding: 12px; border-radius: 8px; text-align: center; border-top: 5px solid var(--primary); box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
         .cat-box h4 { margin: 0; font-size: 0.85em; color: #666; }
@@ -21,8 +22,9 @@
         .stat-item span { display: block; font-size: 1.5em; font-weight: bold; }
         
         table { width: 100%; border-collapse: collapse; font-size: 0.82em; }
-        th { background: var(--primary); color: white; padding: 12px; position: sticky; top: 0; z-index: 10; }
-        td { padding: 10px; border: 1px solid #eee; }
+        th { background: var(--primary); color: white; padding: 12px; position: sticky; top: 0; z-index: 10; text-align: center; }
+        td { padding: 10px; border: 1px solid #eee; text-align: center; vertical-align: middle; }
+	td:nth-child(6) { text-align: left; }
         
         .row-locked { background-color: var(--locked) !important; color: #a00; }
         .row-locked input, .row-locked select { opacity: 0.3; pointer-events: none; }
@@ -265,4 +267,3 @@
 </script>
 </body>
 </html>
-```
