@@ -40,24 +40,15 @@
 
 .table-wrapper { width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; border-radius: 8px; border: 1px solid #eee; }
 
-/* Mobile specific adjustments (No Scroll - Full Fit) */
-        @media (max-width: 600px) {
-            .header-area { flex-direction: column; text-align: center; }
-            .header-area button { width: 100%; justify-content: center; }
-            .banner { flex-direction: column; gap: 10px; }
-            .stat-item { border-bottom: 1px solid #34495e; padding-bottom: 8px; width: 100%; }
-            .stat-item:last-child { border: none; }
-            body { padding: 2px; }
-            .container { padding: 4px; border-radius: 6px; }
-            
-            /* டேபிளை மொபைல் திரைக்குள் சுருக்குவதற்கான மாற்றங்கள் */
-            table { font-size: 0.65em; white-space: normal; } /* எழுத்துகளை சிறிதாக்கி, மடித்து வரச் செய்யும் */
-            th, td { padding: 4px 2px; } /* இடைவெளியை குறைக்கும் */
-            td:nth-child(6) { min-width: 80px; } /* Course Title-க்கான அகலத்தை குறைக்கும் */
-            select { max-width: 50px; font-size: 0.85em; padding: 2px; }
-            input[type="checkbox"] { transform: scale(1); }
-            .badge { padding: 2px 3px; font-size: 0.7em; }
-        }
+@media (max-width: 600px) {
+    .header-area { flex-direction: column; text-align: center; }
+    .header-area button { width: 100%; justify-content: center; }
+    .banner { flex-direction: column; gap: 10px; }
+    .stat-item { border-bottom: 1px solid #34495e; padding-bottom: 8px; width: 100%; }
+    .stat-item:last-child { border: none; }
+    body { padding: 5px; }
+    .container { padding: 10px; border-radius: 6px; }
+}
 /* ---------------------------- */	
 	@media print {
     button, .dev-tag { display: none !important; } 
