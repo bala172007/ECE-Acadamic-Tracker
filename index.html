@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ECE R2024 </title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet" />
     <style>
         :root { --locked: #ffdada; --done: #d4edda; --primary: #1a73e8; --text: #333; }
         body { font-family: 'Segoe UI', sans-serif; background: #f4f7f6; color: var(--text); padding: 15px; }
@@ -51,7 +53,7 @@
 }
 /* ---------------------------- */	
 	@media print {
-    button, .dev-tag { display: none !important; } 
+    button, .dev-tag, .no-print { display: none !important; } 
     body { background: white; padding: 0; }
     .container { box-shadow: none; border: none; width: 100%; max-width: 100%; margin: 0; padding: 0; }
     
@@ -66,8 +68,22 @@
 <div class="container">
     <div class="header-area">
         <h2 style="margin: 0;">B.E. ECE - Academic Progress Report (R2024) | Developed By Bala Muralitharan</h2>
-        <button onclick="downloadPDF()" style="padding: 10px 20px; background: #28a745; color: white; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; display: flex; align-items: center; gap: 8px; shadow: 0 2px 5px rgba(0,0,0,0.1);">
-            📄 Download PDF Report
+        <button onclick="downloadPDF()" style="padding: 10px 20px; background: #28a745; color: white; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; display: flex; align-items: center; gap: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
+            <span class="material-symbols-outlined" style="font-size: 1.2em;">download</span> Download PDF Report
+        </button>
+    </div>
+
+    <!-- PDF Upload Section -->
+    <div class="no-print" style="margin-bottom: 25px; padding: 20px; background: #e8f0fe; border-radius: 8px; border: 1px solid #1a73e8; display: flex; align-items: center; justify-content: space-between; gap: 15px; flex-wrap: wrap;">
+        <div>
+            <h3 style="margin: 0 0 5px 0; color: #1a73e8; font-size: 1.1em; display: flex; align-items: center; gap: 8px;">
+                <span class="material-symbols-outlined">document_scanner</span> Import Semester Results
+            </h3>
+            <p style="margin: 0; font-size: 0.85em; color: #5f6368;">Upload your Camu result PDF to automatically mark completed courses and grades.</p>
+        </div>
+        <input type="file" id="pdfUpload" accept=".pdf" style="display: none;" onchange="handlePDFUpload(event)">
+        <button onclick="document.getElementById('pdfUpload').click()" style="padding: 10px 20px; background: #1a73e8; color: white; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; display: flex; align-items: center; gap: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+            <span class="material-symbols-outlined" style="font-size: 1.2em;">upload</span> Upload Result PDF
         </button>
     </div>
 
@@ -184,32 +200,26 @@
         {id:73, cat: "PE", type: "FC", code:"CS3801", title:"Artificial Intelligence and Applications", cr:3, pre:null},
         {id:74, cat: "PE", type: "FC", code:"CS1542", title:"Embedded Board Design", cr:3, pre:null},
         {id:75, cat: "PE", type: "FC", code:"CS1543", title:"Embedded Board Manufacturing", cr:3, pre:null},
-		{id:75.1, cat: "PE", type: "FC", code:"EC1530", title:"Computer Network Infrastructure and Protocols", cr:3, pre:null},
-        {id:76, cat: "EEC", type: "SBC", code:"EC1701", title:"Mini Project", cr:2, pre:null},
-        {id:77, cat: "EEC", type: "SBC", code:"EC1702", title:"Project Work Phase I", cr:2, pre:null},
-        {id:78, cat: "EEC", type: "SBC", code:"EC1703", title:"Project Work Phase II", cr:6, pre:"EC1702"},
-        {id:79, cat: "EEC", type: "SBC", code:"SH6802", title:"Start Up", cr:8, pre:null},
-        {id:80, cat: "EEC", type: "SBC", code:"SH6708", title:"Career Development Skills", cr:1, pre:null},
-        {id:81, cat: "EEC", type: "FC", code:"SH6709", title:"Reasoning Ability", cr:1, pre:null},
-        {id:82, cat: "EEC", type: "FC", code:"SH6710", title:"Quantitative Ability I", cr:1, pre:null},
-        {id:83, cat: "EEC", type: "FC", code:"SH6711", title:"Quantitative Ability II", cr:1, pre:"SH6710"},
-        {id:84, cat: "EEC", type: "SBC", code:"SH6712", title:"Employment Enrichment Skills", cr:1, pre:null},
-        {id:85, cat: "EEC", type: "FC", code:"SH6713", title:"Placement Readiness Assessment", cr:1, pre:null},
-        {id:86, cat: "EEC", type: "SBC", code:"SH6707", title:"Paper Publication", cr:1, pre:null},
-        {id:87.1, cat: "OE", type: "SBC", code: "OE-1", title: "NPTEL COURSE I", cr: 3, pre: null },
-        {id:87.2, cat: "OE", type: "SBC", code: "OE-2", title: "NPTEL COURSE II", cr: 3, pre: null },
-        {id:87.3, cat: "OE", type: "SBC", code: "OE-3", title: "Open Elective Slot I", cr: 1, pre: null },
-        {id:87.4, cat: "OE", type: "SBC", code: "OE-4", title: "Open Elective Slot II", cr: 2, pre: null },
-	{id:87.5, cat: "OE", type: "SBC", code: "OE-5", title: "Open Elective Slot III", cr: 2, pre: null },
-        {id:87.6, cat: "OE", type: "SBC", code: "OE-6", title: "Open Elective Slot IV", cr: 2, pre: null },
-        {id:87.7, cat: "OE", type: "SBC", code: "OE-7", title: "Open Elective Slot V", cr: 3, pre: null },
-        {id:87.8, cat: "OE", type: "SBC", code: "OE-8", title: "Open Elective Slot VI", cr: 4, pre: null },
-	{id:88, cat:"MC", type: "FC", code:"SH8801", title:"Constitutionalism and AI Policies", cr:1, pre:null},
-        {id:89, cat:"MC", type: "SBC", code:"SH8802", title:"Internship", cr:2, pre:null},
-        {id:90, cat:"MC", type: "SBC", code:"SH8803", title:"Entrepreneurship", cr:2, pre:null},
-        {id:91, cat:"MC", type: "SBC", code:"SH6803", title:"National Service Scheme", cr:0, pre:null},
-        {id:92, cat:"MC", type: "SBC", code:"SH8807", title:"National Sports Organization", cr:0, pre:null},
-        {id:93, cat:"MC", type: "SBC", code:"SH8808", title:"Youth Red Cross", cr:0, pre:null}
+		{id:76, cat: "PE", type: "FC", code:"EC1527", title:"Real Time Operating System using QNX", cr:4, pre:null},
+		{id:77, cat: "PE", type: "FC", code:"EC1530", title:"Computer Network Infrastructure and Protocols", cr:3, pre:null},
+        {id:78, cat: "EEC", type: "SBC", code:"EC1701", title:"Mini Project", cr:2, pre:null},
+        {id:79, cat: "EEC", type: "SBC", code:"EC1702", title:"Project Work Phase I", cr:2, pre:null},
+        {id:80, cat: "EEC", type: "SBC", code:"EC1703", title:"Project Work Phase II", cr:6, pre:"EC1702"},
+        {id:81, cat: "EEC", type: "SBC", code:"SH6802", title:"Start Up", cr:8, pre:null},
+        {id:82, cat: "EEC", type: "SBC", code:"SH6708", title:"Career Development Skills", cr:1, pre:null},
+        {id:83, cat: "EEC", type: "FC", code:"SH6709", title:"Reasoning Ability", cr:1, pre:null},
+        {id:84, cat: "EEC", type: "FC", code:"SH6710", title:"Quantitative Ability I", cr:1, pre:null},
+        {id:85, cat: "EEC", type: "FC", code:"SH6711", title:"Quantitative Ability II", cr:1, pre:"SH6710"},
+        {id:86, cat: "EEC", type: "SBC", code:"SH6712", title:"Employment Enrichment Skills", cr:1, pre:null},
+        {id:87, cat: "EEC", type: "FC", code:"SH6713", title:"Placement Readiness Assessment", cr:1, pre:null},
+        {id:88, cat: "EEC", type: "SBC", code:"SH6707", title:"Paper Publication", cr:1, pre:null},
+	{id:89, cat:"MC", type: "FC", code:"SH8801", title:"Constitutionalism and AI Policies", cr:1, pre:null},
+        {id:90, cat:"MC", type: "SBC", code:"SH8802", title:"Internship", cr:2, pre:null},
+        {id:91, cat:"MC", type: "SBC", code:"SH8803", title:"Entrepreneurship", cr:2, pre:null},
+        {id:92, cat:"MC", type: "SBC", code:"SH6803", title:"National Service Scheme", cr:0, pre:null},
+        {id:93, cat:"MC", type: "SBC", code:"SH8807", title:"National Sports Organization", cr:0, pre:null},
+        {id:94, cat:"MC", type: "SBC", code:"SH8808", title:"Youth Red Cross", cr:0, pre:null},
+        {id:95, cat: "OE", type: "-", code: "OE-ADD", title: "<div style='display:flex; align-items:center; justify-content:space-between;'><div style='text-align:left;'><h3 style='margin: 0 0 5px 0; color: #1a73e8; font-size: 1.1em; display: flex; align-items: center; gap: 8px;'><span class='material-symbols-outlined'>library_add</span> Import Open Elective</h3><p style='margin: 0; font-size: 0.85em; color: #5f6368; font-weight:normal;'>Add as many completed open electives as you need. They will be automatically tracked.</p></div><button onclick='addCustomOE()' style='padding: 10px 20px; background: #1a73e8; color: white; border: none; border-radius: 5px; font-weight: bold; cursor: pointer; box-shadow: 0 2px 4px rgba(0,0,0,0.1); transition: opacity 0.2s; display: flex; align-items: center; gap: 8px;' onmouseover='this.style.opacity=\"0.9\";' onmouseout='this.style.opacity=\"1\";'><span class='material-symbols-outlined' style='font-size: 1.2em;'>add</span> Add Open Elective</button></div>", cr: "-", pre: null }
     ];
 
     function render() {
@@ -218,11 +228,68 @@
         const saved = JSON.parse(localStorage.getItem('ece_93_final_tracker')) || {};
         
         let html = '';
+        const customOE = JSON.parse(localStorage.getItem('ece_93_custom_oe')) || [];
+        let allCourses = [];
+        let idCounter = 1;
         courses.forEach(c => {
+            if (c.code === 'OE-ADD') {
+                customOE.forEach(co => {
+                    allCourses.push({ ...co, id: idCounter++ });
+                });
+                allCourses.push({ ...c, id: idCounter++ });
+            } else {
+                allCourses.push({ ...c, id: idCounter++ });
+            }
+        });
+
+        allCourses.forEach(c => {
+            if (c.code === 'OE-ADD') {
+                html += `
+                <tr style="border-bottom: 2px solid #1a73e8;">
+                    <td colspan="8" style="background: #e8f0fe; padding: 20px;">
+                        ${c.title}
+                    </td>
+                </tr>`;
+                return;
+            }
             const data = saved[c.code] || { d: false, g: 'N/A' };
             // Check if Prerequisite code exists in our course list and is marked as 'Done' in storage
-            const isUnlocked = !c.pre || (saved[c.pre] && saved[c.pre].d);
-            const rowCls = data.d ? 'row-done' : (!isUnlocked ? 'row-locked' : '');
+            let isUnlocked = !c.pre || (saved[c.pre] && saved[c.pre].d); // Normal prerequisite check
+
+            // Mutual exclusive courses (17 & 18)
+            if (c.code === "CS3306" && saved["CS3307"]?.d) {
+                isUnlocked = false;
+            }
+
+            if (c.code === "CS3307" && saved["CS3306"]?.d) {
+                isUnlocked = false;
+            }
+            
+            // Mutual exclusive courses (89 & 90)
+            if (c.code === "SH8802" && saved["SH8803"]?.d) {
+                isUnlocked = false;
+            }
+
+            if (c.code === "SH8803" && saved["SH8802"]?.d) {
+                isUnlocked = false;
+            }
+
+            // Mutual exclusive Project vs Start Up
+            if (c.code === "SH6802" && (saved["EC1702"]?.d || saved["EC1703"]?.d)) {
+                isUnlocked = false;
+            }
+
+            if ((c.code === "EC1702" || c.code === "EC1703") && saved["SH6802"]?.d) {
+                isUnlocked = false;
+            }
+
+            const isEitherOrLocked = (c.code === "CS3306" && saved["CS3307"]?.d) || (c.code === "CS3307" && saved["CS3306"]?.d);
+            const isInternshipLocked = (c.code === "SH8802" && saved["SH8803"]?.d) || (c.code === "SH8803" && saved["SH8802"]?.d);
+            const isProjectOrStartupLocked = (c.code === "SH6802" && (saved["EC1702"]?.d || saved["EC1703"]?.d)) || ((c.code === "EC1702" || c.code === "EC1703") && saved["SH6802"]?.d);
+
+const rowCls = data.d
+    ? 'row-done'
+    : (!isUnlocked ? 'row-locked' : '');
             
             html += `
                 <tr class="${rowCls}">
@@ -232,8 +299,21 @@
                     <td><span class="badge ${c.type==='FC'?'fc':'sbc'}">${c.type}</span></td>
                     <td><b>${c.code}</b></td>
                     <td>
-                        ${c.title} 
-                        ${c.pre ? `<span class="pre-warning">${!isUnlocked?'🔒 ' + c.pre + ' Need to Complete':'(Pre: '+c.pre+')'}</span>`:''}
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <span>${c.title}</span>
+                            ${customOE.some(x => x.code === c.code) ? `<button onclick="removeCustomOE('${c.code}')" style="background:#dc3545; color:white; border:none; border-radius:4px; cursor:pointer; padding:4px 8px; font-size: 0.85em; font-weight:bold; box-shadow: 0 2px 4px rgba(0,0,0,0.1); display: flex; align-items: center; gap: 4px;"><span class="material-symbols-outlined" style="font-size: 1.1em;">delete</span> Remove</button>` : ''}
+                        </div>
+                       ${
+    isEitherOrLocked
+        ? `<span class="pre-warning" style="display: flex; align-items: center; gap: 4px;"><span class="material-symbols-outlined" style="font-size: 1.1em;">lock</span> Either C++ or Java can be completed</span>`
+        : (isInternshipLocked
+            ? `<span class="pre-warning" style="display: flex; align-items: center; gap: 4px;"><span class="material-symbols-outlined" style="font-size: 1.1em;">lock</span> Either Internship or Entrepreneurship can be completed</span>`
+            : (isProjectOrStartupLocked
+                ? `<span class="pre-warning" style="display: flex; align-items: center; gap: 4px;"><span class="material-symbols-outlined" style="font-size: 1.1em;">lock</span> Either Project Work or Start Up can be completed</span>`
+                : (c.pre
+                    ? `<span class="pre-warning" style="display: flex; align-items: center; gap: 4px;">${!isUnlocked ? '<span class="material-symbols-outlined" style="font-size: 1.1em;">lock</span> ' + c.pre + ' Need to Complete' : '(Pre: ' + c.pre + ')'}</span>`
+                    : '')))
+}
                     </td>
                     <td>${c.cr}</td>
                     <td>
@@ -249,28 +329,175 @@
         let earned = 0, pts = 0, gpaCr = 0, dCnt = 0;
         let cStats = { HS:0, BS:0, ES:0, PC:0, PE:0, OE:0, EEC:0, MC:0 };
         
-        courses.forEach(c => {
+        allCourses.forEach(c => {
+            if (c.code === 'OE-ADD') return;
             const s = saved[c.code];
             if(s && s.d) {
                 earned += c.cr; dCnt++;
-		let mainCat = c.cat.startsWith("PE") ? "PE" : c.cat;
+                let mainCat = c.cat.startsWith("PE") ? "PE" : c.cat;
                 if(cStats.hasOwnProperty(mainCat)) {
                     cStats[mainCat] += c.cr;
                 }
-	
                 if(s.g !== 'N/A' && s.g !== 'U') { pts += (gradePoints[s.g]*c.cr); gpaCr += c.cr; }
             }
         });
 
         document.getElementById('cgpa').innerText = gpaCr > 0 ? (pts/gpaCr).toFixed(2) : "0.00";
         document.getElementById('totalCr').innerText = earned + " / 164";
-        document.getElementById('doneCount').innerText = dCnt + " / 93";
+        document.getElementById('doneCount').innerText = dCnt + " / " + (allCourses.length - 1);
 
         cards.innerHTML = Object.keys(requirements).map(cat => `
             <div class="cat-box">
                 <h4>${cat} Category</h4>
                 <div class="cr">${cStats[cat]} / ${requirements[cat]}</div>
             </div>`).join('');
+        }
+
+    function addCustomOE() {
+        let code = prompt("Enter Open Elective Course Code (e.g., OIE751):");
+        if (!code) return;
+        let title = prompt("Enter Open Elective Course Title:");
+        if (!title) return;
+        let cr = parseInt(prompt("Enter Credits (e.g., 3):"));
+        if (isNaN(cr)) return;
+
+        let custom = JSON.parse(localStorage.getItem('ece_93_custom_oe')) || [];
+        custom.push({ cat: "OE", type: "SBC", code: code, title: title, cr: cr, pre: null });
+        localStorage.setItem('ece_93_custom_oe', JSON.stringify(custom));
+        
+        let s = JSON.parse(localStorage.getItem('ece_93_final_tracker')) || {};
+        s[code] = { d: true, g: 'N/A' };
+        localStorage.setItem('ece_93_final_tracker', JSON.stringify(s));
+        
+        render();
+    }
+    
+    function removeCustomOE(code) {
+        if(!confirm("Remove this open elective?")) return;
+        let custom = JSON.parse(localStorage.getItem('ece_93_custom_oe')) || [];
+        custom = custom.filter(c => c.code !== code);
+        localStorage.setItem('ece_93_custom_oe', JSON.stringify(custom));
+        
+        let s = JSON.parse(localStorage.getItem('ece_93_final_tracker')) || {};
+        delete s[code];
+        localStorage.setItem('ece_93_final_tracker', JSON.stringify(s));
+        
+        render();
+    }
+
+    // PDF.js worker
+    pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.worker.min.js';
+
+    async function handlePDFUpload(event) {
+        const file = event.target.files[0];
+        if (!file) return;
+
+        const reader = new FileReader();
+        reader.onload = async function() {
+            const typedarray = new Uint8Array(this.result);
+            try {
+                const pdf = await pdfjsLib.getDocument(typedarray).promise;
+                let fullText = "";
+                
+                for (let i = 1; i <= pdf.numPages; i++) {
+                    const page = await pdf.getPage(i);
+                    const textContent = await page.getTextContent();
+                    
+                    let items = textContent.items;
+                    let lines = {};
+                    // Group by Y coordinate safely
+                    for (let item of items) {
+                        let y = Math.round(item.transform[5] / 5) * 5;
+                        if (!lines[y]) lines[y] = [];
+                        lines[y].push(item);
+                    }
+                    
+                    let sortedY = Object.keys(lines).map(Number).sort((a, b) => b - a); // Descending Y
+                    for (let y of sortedY) {
+                        lines[y].sort((a, b) => a.transform[4] - b.transform[4]); // Ascending X
+                        const lineText = lines[y].map(item => item.str.trim()).filter(s => s).join(" ");
+                        if (lineText) fullText += lineText + "\n";
+                    }
+                }
+                
+                if (fullText.trim() === "") {
+                    alert("ERROR: The PDF parser could not find any readable text in this file. The document is either an image-based PDF (like a screenshot) or uses a protected font without a Unicode mapping layer. \n\nPlease use the 'Paste Text' option instead.");
+                    return;
+                }
+
+                parseResultText(fullText);
+            } catch (err) {
+                alert("Error reading PDF: " + err.message);
+            }
+        };
+        reader.readAsArrayBuffer(file);
+    }
+
+    function parseResultText(text) {
+        // Clean up weird spaces injected inside course codes (e.g. "EC 1701" -> "EC1701")
+        let cleaned = text.replace(/([A-Z]{2,4})\s+(\d{3,4}[A-Z]?)\b/gi, '$1$2');
+        
+        // Clean up weird spaces injected inside grades (e.g. "A +" -> "A+")
+        cleaned = cleaned.replace(/\b(A|B)\s*\+/gi, '$1+');
+
+        const cleanText = cleaned.replace(/\s+/g, ' ');
+        
+        // Scan specifically for Saveetha result pattern.
+        // We use A\s*\+ to handle cases where PDF kerning separates the plus sign.
+        const regex = /([A-Z]{2,4}\d{3,4}[A-Z]?)[-\s]+([A-Za-z0-9\s&,\(\)\-\/]+?)\s+(\d+)\s+(O|A\s*\+|A|B\s*\+|B|C|U)\s+(\d+)/gi;
+        
+        let match;
+        let updatedCount = 0;
+        let addedOECount = 0;
+        
+        let tracker = JSON.parse(localStorage.getItem('ece_93_final_tracker')) || {};
+        let customOE = JSON.parse(localStorage.getItem('ece_93_custom_oe')) || [];
+        
+        const staticCodes = courses.map(c => c.code);
+        
+        while ((match = regex.exec(cleanText)) !== null) {
+            const code = match[1].toUpperCase();
+            const title = match[2].trim();
+            const grade = match[4].toUpperCase().replace(/\s/g, '');
+            const cr = parseInt(match[5]);
+            
+            tracker[code] = { d: true, g: grade };
+            updatedCount++;
+            
+            // If it is an Open Elective and not currently in static/custom courses, add it
+            if (!staticCodes.includes(code) && code !== 'OE-ADD' && !customOE.some(c => c.code === code)) {
+                let cleanTitle = prompt(`New Open Elective Detected: ${code}\n\nThe PDF layout sometimes garbles the text. Please confirm or correct the course title below:`, title);
+                customOE.push({ cat: "OE", type: "SBC", code: code, title: cleanTitle || title, cr: cr, pre: null });
+                addedOECount++;
+            }
+        }
+        
+        // Fallback for strict static course mapping if layout spacing broke general regex
+        courses.forEach(c => {
+            if (c.code === 'OE-ADD') return;
+            if (tracker[c.code] && tracker[c.code].d) return; // already processed
+            
+            const codeIdx = cleanText.indexOf(c.code);
+            if (codeIdx !== -1) {
+                const sub = cleanText.substring(codeIdx, codeIdx + 150);
+                const gradeMatch = sub.match(/(?:\s|^)(O|A\s*\+|A|B\s*\+|B|C|U)(?:\s|$)/i);
+                if (gradeMatch) {
+                    tracker[c.code] = { d: true, g: gradeMatch[1].toUpperCase().replace(/\s/g, '') };
+                    updatedCount++;
+                }
+            }
+        });
+        
+        if (updatedCount > 0) {
+            localStorage.setItem('ece_93_final_tracker', JSON.stringify(tracker));
+            if (addedOECount > 0) {
+                localStorage.setItem('ece_93_custom_oe', JSON.stringify(customOE));
+            }
+            alert(`Import Complete! Marked ${updatedCount} courses as completed (including ${addedOECount} new Open Elective(s)).`);
+            render();
+        } else {
+            prompt("No course results detected! Please COPY the text below and send it to the AI so it can fix the parser:", cleanText.substring(0, 1500));
+        }
     }
 
     function upd(code, f, v) {
