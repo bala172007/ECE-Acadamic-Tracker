@@ -42,14 +42,33 @@
 
 .table-wrapper { width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; border-radius: 8px; border: 1px solid #eee; }
 
-@media (max-width: 600px) {
-    .header-area { flex-direction: column; text-align: center; }
+.pdf-upload-box, .oe-add-box { display: flex; align-items: center; justify-content: space-between; gap: 15px; flex-wrap: wrap; }
+.oe-add-text { text-align: left; }
+
+@media (max-width: 768px) {
+    .header-area { flex-direction: column; text-align: center; gap: 12px; }
+    .header-area h2 { font-size: 1.1em; }
     .header-area button { width: 100%; justify-content: center; }
-    .banner { flex-direction: column; gap: 10px; }
-    .stat-item { border-bottom: 1px solid #34495e; padding-bottom: 8px; width: 100%; }
-    .stat-item:last-child { border: none; }
-    body { padding: 5px; }
-    .container { padding: 10px; border-radius: 6px; }
+    
+    .banner { flex-direction: column; gap: 12px; padding: 15px; }
+    .stat-item { border-bottom: 1px solid #34495e; padding-bottom: 10px; width: 100%; }
+    .stat-item:last-child { border: none; padding-bottom: 0; }
+    .stat-item span { font-size: 1.25em; }
+    
+    body { padding: 5px; font-size: 0.9em; }
+    .container { padding: 8px; border-radius: 6px; }
+    
+    table { font-size: 0.65em; }
+    th, td { padding: 6px 4px; }
+    select { font-size: 0.9em; padding: 2px 18px 1px 1px; }
+    .badge { font-size: 0.8em; padding: 2px 4px; }
+    .pre-warning { font-size: 0.8em; }
+    .material-symbols-outlined { font-size: 1.2em !important; }
+    
+    .pdf-upload-box, .oe-add-box { flex-direction: column; text-align: center; justify-content: center; }
+    .oe-add-text { text-align: center; }
+    .pdf-upload-box h3, .oe-add-box h3 { justify-content: center; font-size: 1em !important; }
+    .pdf-upload-box button, .oe-add-box button { width: 100%; justify-content: center; }
 }
 /* ---------------------------- */	
 	@media print {
@@ -74,7 +93,7 @@
     </div>
 
     <!-- PDF Upload Section -->
-    <div class="no-print" style="margin-bottom: 25px; padding: 20px; background: #e8f0fe; border-radius: 8px; border: 1px solid #1a73e8; display: flex; align-items: center; justify-content: space-between; gap: 15px; flex-wrap: wrap;">
+    <div class="no-print pdf-upload-box" style="margin-bottom: 25px; padding: 20px; background: #e8f0fe; border-radius: 8px; border: 1px solid #1a73e8;">
         <div>
             <h3 style="margin: 0 0 5px 0; color: #1a73e8; font-size: 1.1em; display: flex; align-items: center; gap: 8px;">
                 <span class="material-symbols-outlined">document_scanner</span> Import Semester Results
@@ -91,7 +110,7 @@
     <div class="banner">
         <div class="stat-item">TOTAL CGPA<span id="cgpa">0.00</span></div>
         <div class="stat-item">Credits Completed<span id="totalCr">0 / 164</span></div>
-        <div class="stat-item">Courses Completed<span id="doneCount">0 / 95</span></div>
+        <div class="stat-item">Courses Completed<span id="doneCount">0 / 93</span></div>
     </div>
 
   
@@ -219,7 +238,7 @@
         {id:92, cat:"MC", type: "SBC", code:"SH6803", title:"National Service Scheme", cr:0, pre:null},
         {id:93, cat:"MC", type: "SBC", code:"SH8807", title:"National Sports Organization", cr:0, pre:null},
         {id:94, cat:"MC", type: "SBC", code:"SH8808", title:"Youth Red Cross", cr:0, pre:null},
-        {id:95, cat: "OE", type: "-", code: "OE-ADD", title: "<div style='display:flex; align-items:center; justify-content:space-between;'><div style='text-align:left;'><h3 style='margin: 0 0 5px 0; color: #1a73e8; font-size: 1.1em; display: flex; align-items: center; gap: 8px;'><span class='material-symbols-outlined'>library_add</span> Import Open Elective</h3><p style='margin: 0; font-size: 0.85em; color: #5f6368; font-weight:normal;'>Add as many completed open electives as you need. They will be automatically tracked.</p></div><button onclick='addCustomOE()' style='padding: 10px 20px; background: #1a73e8; color: white; border: none; border-radius: 5px; font-weight: bold; cursor: pointer; box-shadow: 0 2px 4px rgba(0,0,0,0.1); transition: opacity 0.2s; display: flex; align-items: center; gap: 8px;' onmouseover='this.style.opacity=\"0.9\";' onmouseout='this.style.opacity=\"1\";'><span class='material-symbols-outlined' style='font-size: 1.2em;'>add</span> Add Open Elective</button></div>", cr: "-", pre: null }
+        {id:95, cat: "OE", type: "-", code: "OE-ADD", title: "<div class='oe-add-box'><div class='oe-add-text'><h3 style='margin: 0 0 5px 0; color: #1a73e8; font-size: 1.1em; display: flex; align-items: center; gap: 8px;'><span class='material-symbols-outlined'>library_add</span> Import Open Elective</h3><p style='margin: 0; font-size: 0.85em; color: #5f6368; font-weight:normal;'>Add as many completed open electives as you need. They will be automatically tracked.</p></div><button onclick='addCustomOE()' style='padding: 10px 20px; background: #1a73e8; color: white; border: none; border-radius: 5px; font-weight: bold; cursor: pointer; box-shadow: 0 2px 4px rgba(0,0,0,0.1); transition: opacity 0.2s; display: flex; align-items: center; gap: 8px;' onmouseover='this.style.opacity=\"0.9\";' onmouseout='this.style.opacity=\"1\";'><span class='material-symbols-outlined' style='font-size: 1.2em;'>add</span> Add Open Elective</button></div>", cr: "-", pre: null }
     ];
 
     function render() {
