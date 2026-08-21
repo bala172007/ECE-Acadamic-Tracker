@@ -4,11 +4,30 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ECE R2024 </title>
+    <link rel="manifest" href="./manifest.json">
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./sw.js').then(reg => {
+                    console.log('Service Worker registered', reg);
+                }).catch(err => {
+                    console.warn('Service Worker registration failed', err);
+                });
+            });
+        }
+    </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet" />
     <style>
-        :root { --locked: #ffdada; --done: #d4edda; --primary: #1a73e8; --text: #333; }
-        body { font-family: 'Segoe UI', sans-serif; background: #f4f7f6; color: var(--text); padding: 15px; }
+        :root { --locked: #ffdada; --done: #d4edda; --primary: #1a73e8; --sandbox: #9c27b0; --text: #333; }
+        body { font-family: 'Segoe UI', sans-serif; background: #f4f7f6; color: var(--text); padding: 15px; transition: background 0.3s; }
+        body.sandbox-active { background: #f3e5f5; }
+        body.sandbox-active .container { box-shadow: 0 4px 20px rgba(156, 39, 176, 0.2); border: 2px dashed var(--sandbox); }
+        body.sandbox-active h2, body.sandbox-active h3 { color: var(--sandbox) !important; }
+        body.sandbox-active .badge.sbc { background: var(--sandbox); }
+        body.sandbox-active button[onclick="downloadPDF()"] { background: var(--sandbox) !important; }
+        .sandbox-banner { display: none; background: var(--sandbox); color: white; text-align: center; padding: 10px; border-radius: 6px; margin-bottom: 20px; font-weight: bold; }
+        body.sandbox-active .sandbox-banner { display: flex; align-items: center; justify-content: center; gap: 8px; }
         .container { max-width: 1450px; margin: auto; background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); }
         
         /* Category Progress Cards */
@@ -42,14 +61,35 @@
 
 .table-wrapper { width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; border-radius: 8px; border: 1px solid #eee; }
 
-@media (max-width: 600px) {
-    .header-area { flex-direction: column; text-align: center; }
+.pdf-upload-box, .oe-add-box { display: flex; align-items: center; justify-content: space-between; gap: 15px; flex-wrap: wrap; }
+.oe-add-text { text-align: left; }
+
+@media (max-width: 768px) {
+    .header-area { flex-direction: column; text-align: center; gap: 12px; }
+    .header-area h2 { font-size: 1.1em; }
     .header-area button { width: 100%; justify-content: center; }
-    .banner { flex-direction: column; gap: 10px; }
-    .stat-item { border-bottom: 1px solid #34495e; padding-bottom: 8px; width: 100%; }
-    .stat-item:last-child { border: none; }
-    body { padding: 5px; }
-    .container { padding: 10px; border-radius: 6px; }
+    
+    .banner { flex-direction: column; gap: 12px; padding: 15px; }
+    .stat-item { border-bottom: 1px solid #34495e; padding-bottom: 10px; width: 100%; }
+    .stat-item:last-child { border: none; padding-bottom: 0; }
+    .stat-item span { font-size: 1.25em; }
+    
+    body { padding: 5px; font-size: 0.9em; }
+    .container { padding: 8px; border-radius: 6px; }
+    
+    table { font-size: 0.65em; }
+    th, td { padding: 6px 4px; }
+    select { font-size: 0.9em; padding: 2px 18px 1px 1px; }
+    .badge { font-size: 0.8em; padding: 2px 4px; }
+    .pre-warning { font-size: 0.8em; }
+    .material-symbols-outlined { font-size: 1.2em !important; }
+    input[type="checkbox"] { transform: scale(1.0); }
+    .remove-text { display: none; }
+    
+    .pdf-upload-box, .oe-add-box { flex-direction: column; text-align: center; justify-content: center; }
+    .oe-add-text { text-align: center; }
+    .pdf-upload-box h3, .oe-add-box h3 { justify-content: center; font-size: 1em !important; }
+    .pdf-upload-box button, .oe-add-box button { width: 100%; justify-content: center; }
 }
 /* ---------------------------- */	
 	@media print {
@@ -66,15 +106,24 @@
 <body>
 
 <div class="container">
+    <div class="sandbox-banner">
+        <span class="material-symbols-outlined">science</span>
+        Sandbox "What-If" Mode Active — Your changes are not being saved permanently.
+    </div>
     <div class="header-area">
         <h2 style="margin: 0;">B.E. ECE - Academic Progress Report (R2024) | Developed By Bala Muralitharan</h2>
-        <button onclick="downloadPDF()" style="padding: 10px 20px; background: #28a745; color: white; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; display: flex; align-items: center; gap: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
-            <span class="material-symbols-outlined" style="font-size: 1.2em;">download</span> Download PDF Report
-        </button>
+        <div style="display: flex; gap: 10px; flex-wrap: wrap; justify-content: center;">
+            <button onclick="toggleSandbox()" style="padding: 10px 20px; background: #6c757d; color: white; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; display: flex; align-items: center; gap: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); transition: background 0.2s;">
+                <span class="material-symbols-outlined" style="font-size: 1.2em;">science</span> <span id="sandboxBtnText">Enable Sandbox</span>
+            </button>
+            <button onclick="downloadPDF()" style="padding: 10px 20px; background: #28a745; color: white; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; display: flex; align-items: center; gap: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
+                <span class="material-symbols-outlined" style="font-size: 1.2em;">download</span> Download PDF Report
+            </button>
+        </div>
     </div>
 
     <!-- PDF Upload Section -->
-    <div class="no-print" style="margin-bottom: 25px; padding: 20px; background: #e8f0fe; border-radius: 8px; border: 1px solid #1a73e8; display: flex; align-items: center; justify-content: space-between; gap: 15px; flex-wrap: wrap;">
+    <div class="no-print pdf-upload-box" style="margin-bottom: 25px; padding: 20px; background: #e8f0fe; border-radius: 8px; border: 1px solid #1a73e8;">
         <div>
             <h3 style="margin: 0 0 5px 0; color: #1a73e8; font-size: 1.1em; display: flex; align-items: center; gap: 8px;">
                 <span class="material-symbols-outlined">document_scanner</span> Import Semester Results
@@ -117,6 +166,44 @@
 <script>
     const gradePoints = { "O": 10, "A+": 9, "A": 8, "B+": 7, "B": 6, "C": 5, "U": 0, "N/A": 0 };
     const requirements = { "HS": 13, "BS": 21, "ES": 23, "PC": 61, "PE": 15, "OE": 12, "EEC": 16, "MC": 3 };
+
+    let sandboxMode = false;
+    let sbData = {};
+    let sbOE = [];
+
+    function toggleSandbox() {
+        sandboxMode = !sandboxMode;
+        if (sandboxMode) {
+            sbData = JSON.parse(localStorage.getItem('ece_93_final_tracker')) || {};
+            sbOE = JSON.parse(localStorage.getItem('ece_93_custom_oe')) || [];
+            document.body.classList.add('sandbox-active');
+            document.getElementById('sandboxBtnText').innerText = "Disable Sandbox";
+        } else {
+            document.body.classList.remove('sandbox-active');
+            document.getElementById('sandboxBtnText').innerText = "Enable Sandbox";
+        }
+        render();
+    }
+
+    function getTrackerData() {
+        if (sandboxMode) return sbData;
+        return JSON.parse(localStorage.getItem('ece_93_final_tracker')) || {};
+    }
+
+    function saveTrackerData(data) {
+        if (sandboxMode) { sbData = data; }
+        else { localStorage.setItem('ece_93_final_tracker', JSON.stringify(data)); }
+    }
+
+    function getCustomOE() {
+        if (sandboxMode) return sbOE;
+        return JSON.parse(localStorage.getItem('ece_93_custom_oe')) || [];
+    }
+
+    function saveCustomOE(data) {
+        if (sandboxMode) { sbOE = data; }
+        else { localStorage.setItem('ece_93_custom_oe', JSON.stringify(data)); }
+    }
 
     const courses = [
         {id:1, cat:"HS", type:"SBC", code:"SH1106", title:"English for Engineers", cr:4, pre:null},
@@ -225,14 +312,14 @@
         {id:93, cat:"MC", type:"SBC", code:"SH8807", title:"National Sports Organization", cr:0, pre:null},
         {id:94, cat:"MC", type:"SBC", code:"SH8808", title:"Youth Red Cross", cr:0, pre:null},
         {id:95, cat: "OE", type: "-", code: "OE-ADD", title: "<div class='oe-add-box'><div class='oe-add-text'><h3 style='margin: 0 0 5px 0; color: #1a73e8; font-size: 1.1em; display: flex; align-items: center; gap: 8px;'><span class='material-symbols-outlined'>library_add</span> Import Open Elective</h3><p style='margin: 0; font-size: 0.85em; color: #5f6368; font-weight:normal;'>Add as many completed open electives as you need. They will be automatically tracked.</p></div><button onclick='addCustomOE()' style='padding: 10px 20px; background: #1a73e8; color: white; border: none; border-radius: 5px; font-weight: bold; cursor: pointer; box-shadow: 0 2px 4px rgba(0,0,0,0.1); transition: opacity 0.2s; display: flex; align-items: center; gap: 8px;' onmouseover='this.style.opacity="0.9";' onmouseout='this.style.opacity="1";'><span class='material-symbols-outlined' style='font-size: 1.2em;'>add</span> Add Open Elective</button></div>", cr: "-", pre: null }
-    ];
+    ]:
     function render() {
         const table = document.getElementById('courseBody');
         const cards = document.getElementById('catCards');
-        const saved = JSON.parse(localStorage.getItem('ece_93_final_tracker')) || {};
+        const saved = getTrackerData();
         
         let html = '';
-        const customOE = JSON.parse(localStorage.getItem('ece_93_custom_oe')) || [];
+        const customOE = getCustomOE();
         let allCourses = [];
         let idCounter = 1;
         courses.forEach(c => {
@@ -305,7 +392,7 @@ const rowCls = data.d
                     <td>
                         <div style="display: flex; justify-content: space-between; align-items: center;">
                             <span>${c.title}</span>
-                            ${customOE.some(x => x.code === c.code) ? `<button onclick="removeCustomOE('${c.code}')" style="background:#dc3545; color:white; border:none; border-radius:4px; cursor:pointer; padding:4px 8px; font-size: 0.85em; font-weight:bold; box-shadow: 0 2px 4px rgba(0,0,0,0.1); display: flex; align-items: center; gap: 4px;"><span class="material-symbols-outlined" style="font-size: 1.1em;">delete</span> Remove</button>` : ''}
+                            ${customOE.some(x => x.code === c.code) ? `<button onclick="removeCustomOE('${c.code}')" style="background:#dc3545; color:white; border:none; border-radius:4px; cursor:pointer; padding:4px 8px; font-size: 0.85em; font-weight:bold; box-shadow: 0 2px 4px rgba(0,0,0,0.1); display: flex; align-items: center; gap: 4px;"><span class="material-symbols-outlined" style="font-size: 1.1em;">delete</span><span class="remove-text"> Remove</span></button>` : ''}
                         </div>
                        ${
     isEitherOrLocked
@@ -365,26 +452,26 @@ const rowCls = data.d
         let cr = parseInt(prompt("Enter Credits (e.g., 3):"));
         if (isNaN(cr)) return;
 
-        let custom = JSON.parse(localStorage.getItem('ece_93_custom_oe')) || [];
+        let custom = getCustomOE();
         custom.push({ cat: "OE", type: "SBC", code: code, title: title, cr: cr, pre: null });
-        localStorage.setItem('ece_93_custom_oe', JSON.stringify(custom));
+        saveCustomOE(custom);
         
-        let s = JSON.parse(localStorage.getItem('ece_93_final_tracker')) || {};
+        let s = getTrackerData();
         s[code] = { d: true, g: 'N/A' };
-        localStorage.setItem('ece_93_final_tracker', JSON.stringify(s));
+        saveTrackerData(s);
         
         render();
     }
     
     function removeCustomOE(code) {
         if(!confirm("Remove this open elective?")) return;
-        let custom = JSON.parse(localStorage.getItem('ece_93_custom_oe')) || [];
+        let custom = getCustomOE();
         custom = custom.filter(c => c.code !== code);
-        localStorage.setItem('ece_93_custom_oe', JSON.stringify(custom));
+        saveCustomOE(custom);
         
-        let s = JSON.parse(localStorage.getItem('ece_93_final_tracker')) || {};
+        let s = getTrackerData();
         delete s[code];
-        localStorage.setItem('ece_93_final_tracker', JSON.stringify(s));
+        saveTrackerData(s);
         
         render();
     }
@@ -454,8 +541,8 @@ const rowCls = data.d
         let updatedCount = 0;
         let addedOECount = 0;
         
-        let tracker = JSON.parse(localStorage.getItem('ece_93_final_tracker')) || {};
-        let customOE = JSON.parse(localStorage.getItem('ece_93_custom_oe')) || [];
+        let tracker = getTrackerData();
+        let customOE = getCustomOE();
         
         const staticCodes = courses.map(c => c.code);
         
@@ -493,9 +580,9 @@ const rowCls = data.d
         });
         
         if (updatedCount > 0) {
-            localStorage.setItem('ece_93_final_tracker', JSON.stringify(tracker));
+            saveTrackerData(tracker);
             if (addedOECount > 0) {
-                localStorage.setItem('ece_93_custom_oe', JSON.stringify(customOE));
+                saveCustomOE(customOE);
             }
             alert(`Import Complete! Marked ${updatedCount} courses as completed (including ${addedOECount} new Open Elective(s)).`);
             render();
@@ -505,10 +592,10 @@ const rowCls = data.d
     }
 
     function upd(code, f, v) {
-        let s = JSON.parse(localStorage.getItem('ece_93_final_tracker')) || {};
+        let s = getTrackerData();
         if(!s[code]) s[code] = { d: false, g: 'N/A' };
         s[code][f] = v;
-        localStorage.setItem('ece_93_final_tracker', JSON.stringify(s));
+        saveTrackerData(s);
         render();
     }
 	function downloadPDF() {
